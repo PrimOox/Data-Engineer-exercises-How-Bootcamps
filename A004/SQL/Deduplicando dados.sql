@@ -18,8 +18,26 @@ where  t1.artist  like '%'
 and t1.dedup_song = 1
 --and t1.dedup_artist = 1 
 ; 
- 
- 
+
+create table tb_artist as 
+select t1."date"
+	,t1."rank"
+	,t1.artist
+	,t1.song
+from public."Billboard" as t1
+where t1.artist = 'AC/DC'
+order by t1.artist, t1.song, t1."date";
+
+insert into tb_artist (
+select t1."date"
+	,t1."rank"
+	,t1.artist
+	,t1.song
+from public."Billboard" as t1
+where t1.artist like 'Elvis%'
+order by t1.artist, t1.song, t1."date"
+);
+
 create table tb_first_song as( 
 with cte_dedup as( 
 SELECT t1."date" 
@@ -49,6 +67,27 @@ drop table tb_first_song;
 select * from tb_first_song; 
  
  
+create view vw_artist as( 
+with cte_dedup_artist as( 
+SELECT t1."date" 
+    ,t1."rank" 
+    ,t1.song  
+    ,t1.artist 
+    ,row_number() over(partition by artist order by 
+t1.artist,t1.song, t1."date") as dedup_song 
+    ,row_number() over(partition by t1.artist order by artist, "date") as dedup 
+FROM tb_artist as t1
+order by t1.artist, t1."date" 
+)
+select t1."date" 
+    ,t1."rank" 
+    ,t1.artist 
+from cte_dedup_artist as t1
+where t1.dedup = 1 
+); 
+-- drop view vw_artist;
+select * from vw_artist;
+
 create view vw_song as( 
 select * from tb_first_song 
 ); 
@@ -76,6 +115,7 @@ and t1.dedup_song = 1
 ) 
  
 select * from vw_song; 
+select * from vw_artist; 
  
  
 create or replace view vw_song as( 
