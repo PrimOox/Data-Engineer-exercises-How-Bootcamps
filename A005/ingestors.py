@@ -2,7 +2,7 @@ import datetime
 from abc import ABC, abstractmethod
 from typing import List
 
-from mercado_bitcoin.apis import DaySummaryApi
+from apis import DaySummaryApi
 
 
 class DataIngestor(ABC):
@@ -28,6 +28,12 @@ class DataIngestor(ABC):
         except FileNotFoundError:
             return self.default_start_date
 
+    # def _get_checkpoint(self):
+    #     if not self._checkpoint:
+    #         return self.default_start_date
+    #     else:
+    #         return self._checkpoint
+
     def _update_checkpoint(self, value):
         self._checkpoint = value
         self._write_checkpoint()
@@ -47,3 +53,5 @@ class DaySummaryIngestor(DataIngestor):
                 data = api.get_data(date=date)
                 self.writer(coin=coin, api=api.type).write(data)
             self._update_checkpoint(date + datetime.timedelta(days=1))
+
+
