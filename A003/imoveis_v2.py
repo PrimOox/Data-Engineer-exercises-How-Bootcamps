@@ -109,12 +109,13 @@ while len(json_data['search']['result']['listings']) > 0:
     imovel_id = imovel_id + qtd
     if imovel_id > 9700:
         sz = 10000 - imovel_id
-        time.sleep(1)
+        time.sleep(3)
         json_data = get_json(url, sz, imovel_id, headersList, payload)
+        print(f"valor i: {qtd}\t\t qtd_imoveis: {imovel_id}\t\t size: {sz}")
         time.sleep(20)
         break
 
-    time.sleep(1) # para evitar o erro 429
+    time.sleep(2) # para evitar o erro 429
     json_data = get_json(url, 300, imovel_id, headersList, payload)
 
 
