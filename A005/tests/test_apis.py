@@ -27,7 +27,7 @@ class TestTradesApi:
         "coin, date_from, date_to, expected",
         [
             ("TEST", datetime.datetime(2019, 1, 1), datetime.datetime(2019, 1, 2),
-             "https://www.mercadobitcoin.net/api/TEST/trades/1546308000/1546394400"),
+             "https://www.mercadobitcoin.net/api/TEST/trades/1546311600/1546398000"),
             ("TEST", datetime.datetime(2019, 6, 12), datetime.datetime(2019, 6, 15),
              "https://www.mercadobitcoin.net/api/TEST/trades/1560308400/1560567600"),
             ("TEST", None, None,
@@ -54,8 +54,8 @@ class TestTradesApi:
         "date, expected",
         [
             # print(int(datetime.datetime(2019,1,1).timestamp()))
-            (datetime.datetime(2019, 1, 1), 1546308000),
-            (datetime.datetime(2019, 1, 2), 1546394400),
+            (datetime.datetime(2019, 1, 1), 1546311600),
+            (datetime.datetime(2019, 1, 2), 1546398000),
             (datetime.datetime(2019, 6, 12), 1560308400),
             (datetime.datetime(2019, 6, 12, 0, 0, 5), 1560308405),
             (datetime.datetime(2019, 6, 15), 1560567600),
