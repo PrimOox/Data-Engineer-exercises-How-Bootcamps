@@ -6,4 +6,5 @@ https://howedu.com.br/cohort/engenharia-de-dados/
 - Fundamentos de Ingestão de Dados - A003
 - SQL (CTE's, Window Functions), Docker, Metabase - A004
 - Capturando dados de uma API | Ingestão com Scripts Escaláveis, Orientação a Objetos, Checkpoint - A005
+- Testes + Jenkins - A005
 - Capturando dados com crawlers | Selenium - A006
