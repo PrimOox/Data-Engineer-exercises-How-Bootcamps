@@ -2,6 +2,7 @@ day-summary/
 *.checkpoint
 __MACOSX/
 chromedriver
+A007/jenkins_home
 
 .vscode
 *.pdf
