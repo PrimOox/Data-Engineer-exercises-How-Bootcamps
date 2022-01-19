@@ -1,7 +1,11 @@
 import datetime
+from unittest import expectedFailure
+from unittest.mock import patch
+from urllib import request
 import pytest
+import requests
 
-from apis import DaySummaryApi, TradesApi
+from apis import DaySummaryApi, MercadoBitcoinApi, TradesApi
 
 
 class TestDaySummaryApi:
@@ -27,7 +31,7 @@ class TestTradesApi:
         "coin, date_from, date_to, expected",
         [
             ("TEST", datetime.datetime(2019, 1, 1), datetime.datetime(2019, 1, 2),
-             "https://www.mercadobitcoin.net/api/TEST/trades/1546311600/1546398000"),
+             "https://www.mercadobitcoin.net/api/TEST/trades/1546308000/1546394400"),
             ("TEST", datetime.datetime(2019, 6, 12), datetime.datetime(2019, 6, 15),
              "https://www.mercadobitcoin.net/api/TEST/trades/1560308400/1560567600"),
             ("TEST", None, None,
@@ -54,8 +58,8 @@ class TestTradesApi:
         "date, expected",
         [
             # print(int(datetime.datetime(2019,1,1).timestamp()))
-            (datetime.datetime(2019, 1, 1), 1546311600),
-            (datetime.datetime(2019, 1, 2), 1546398000),
+            (datetime.datetime(2019, 1, 1), 1546308000),
+            (datetime.datetime(2019, 1, 2), 1546394400),
             (datetime.datetime(2019, 6, 12), 1560308400),
             (datetime.datetime(2019, 6, 12, 0, 0, 5), 1560308405),
             (datetime.datetime(2019, 6, 15), 1560567600),
@@ -64,3 +68,51 @@ class TestTradesApi:
     def test_get_unix_epoch(self, date, expected):
         actual = TradesApi(coin="TEST")._get_unix_epoch(date)
         assert actual == expected
+
+@pytest.fixture
+@patch("apis.MercadoBitcoinApi.__abstractmethods__", set())
+def fixture_mercado_bitcoin_api():
+    return MercadoBitcoinApi(
+            coin="test"
+        )
+
+def mocked_requests_get(*args, **kwargs):
+    class MockResponse(requests.Response):
+        def __init__(self, json_data, status_code):
+            super().__init__()
+            self.status_code = status_code
+            self.json_data = json_data
+
+        def json(self):
+            return self.json_data
+
+        def raise_for_status(self) -> None:
+            if self.status_code != 200:
+                raise Exception
+    
+    if args[0] == "valid_endpoint":
+        return MockResponse(json_data={"foo": "bar"}, status_code=200)
+    else:
+        return MockResponse(json_data=None, status_code=404)
+
+
+
+class TestMercadobitcoinApi:
+    @patch("requests.get")
+    @patch("apis.MercadoBitcoinApi._get_endpoint", return_value="valid_endpoint")
+    def test_get_data_requests_is_called(self, mock_get_endpoint, mock_requests, fixture_mercado_bitcoin_api):
+        fixture_mercado_bitcoin_api.get_data()
+        mock_requests.assert_called_once_with("valid_endpoint")
+
+    @patch("requests.get", side_effect=mocked_requests_get)
+    @patch("apis.MercadoBitcoinApi._get_endpoint", return_value="valid_endpoint")
+    def test_get_data_with_valid_endpoint(self, mock_get_endpoint, mock_requests, fixture_mercado_bitcoin_api):
+        actual = fixture_mercado_bitcoin_api.get_data()
+        expected = {"foo": "bar"}
+        assert actual == expected
+
+    @patch("requests.get", side_effect=mocked_requests_get)
+    @patch("apis.MercadoBitcoinApi._get_endpoint", return_value="invalid_endpoint")
+    def test_get_data_with_valid_endpoint(self, mock_get_endpoint, mock_requests, fixture_mercado_bitcoin_api):
+        with pytest.raises(Exception):
+            fixture_mercado_bitcoin_api.get_data()        
