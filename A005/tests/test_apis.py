@@ -1,7 +1,5 @@
 import datetime
-from unittest import expectedFailure
 from unittest.mock import patch
-from urllib import request
 import pytest
 import requests
 
