@@ -27,15 +27,15 @@ class TestTradesApi:
         "coin, date_from, date_to, expected",
         [
             ("TEST", datetime.datetime(2019, 1, 1), datetime.datetime(2019, 1, 2),
-             "https://www.mercadobitcoin.net/api/TEST/trades/1546308000/1546394400"),
+             "https://www.mercadobitcoin.net/api/TEST/trades/1546300800/1546387200"),
             ("TEST", datetime.datetime(2021, 6, 12), datetime.datetime(2021, 6, 15),
-             "https://www.mercadobitcoin.net/api/TEST/trades/1623466800/1623726000"),
+             "https://www.mercadobitcoin.net/api/TEST/trades/1623456000/1623715200"),
             ("TEST", None, None,
              "https://www.mercadobitcoin.net/api/TEST/trades"),
             ("TEST", None, datetime.datetime(2021, 6, 15),
              "https://www.mercadobitcoin.net/api/TEST/trades"),
             ("TEST", datetime.datetime(2021, 6, 12), None,
-             "https://www.mercadobitcoin.net/api/TEST/trades/1623466800"),
+             "https://www.mercadobitcoin.net/api/TEST/trades/1623456000"),
         ]
     )
     def test_get_endpoint(self, coin, date_from, date_to, expected):
@@ -52,11 +52,11 @@ class TestTradesApi:
     @pytest.mark.parametrize(
         "date, expected",
         [
-            (datetime.datetime(2019, 1, 1), 1546308000),
-            (datetime.datetime(2019, 1, 2), 1546394400),
-            (datetime.datetime(2021, 6, 12), 1623466800),
-            (datetime.datetime(2021, 6, 12, 0, 0, 5), 1623466805),
-            (datetime.datetime(2021, 6, 15), 1623726000),
+            (datetime.datetime(2019, 1, 1), 1546300800),
+            (datetime.datetime(2019, 1, 2), 1546387200),
+            (datetime.datetime(2021, 6, 12), 1623456000),
+            (datetime.datetime(2021, 6, 12, 0, 0, 5), 1623456005),
+            (datetime.datetime(2021, 6, 15), 1623715200),
         ]
     )
     def test_get_unix_epoch(self, date, expected):
@@ -108,6 +108,6 @@ class TestMercadoBitcoinApi:
 
     @patch("requests.get", side_effect=mocked_requests_get)
     @patch("mercado_bitcoin.apis.MercadoBitcoinApi._get_endpoint", return_value="invalid_endpoint")
-    def test_get_data_with_valid_endpoint(self, mock_get_endpoint, mock_requests, fixture_mercado_bitcoin_api):
+    def test_get_data_with_invalid_endpoint(self, mock_get_endpoint, mock_requests, fixture_mercado_bitcoin_api):
         with pytest.raises(Exception):
             fixture_mercado_bitcoin_api.get_data()
