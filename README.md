@@ -8,7 +8,7 @@ Projeto   | Descrição |
 [Capturando dados de uma API: Ingestão de Dados com Scripts Escaláveis](aws-lambda-mercado-bitcoin) | Projeto de ingestão de dados da API do mercado bitcoin que funciona de forma escalável, com checkpoints, seguindo princípios SOLID, orientado a objetos e com cobertura de testes.
 [Capturando dados com crawlers (Selenium)](selenium-crawler) | Exemplos de como capturar dados em uma página web utilizando Selenium.
 [Jenkins com Docker](jenkins-docker) | Exemplo de como criar um servidor Jenkins com o Docker para automatizar a execução de tarefas.
-[Simulando Streaming de Dados com Kinesis Firehose](data-streaming-kinesis-firehose) | ....
+[Simulando Streaming de Dados com Kinesis Firehose](data-streaming-kinesis-firehose) | Exemplo de projeto que faz a geração e ingestão de dados em tempo real para o Kinesis Firehose, salvando os arquivos em um bucket do S3.
 
 ## Referências
 - [Bootcamp Engenharia de Dados (How)](https://howedu.com.br/cohort/engenharia-de-dados/)
