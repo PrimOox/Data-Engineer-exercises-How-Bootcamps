@@ -1,15 +1,3 @@
-# Personal
-*/day-summary/
-*.checkpoint
-*/__MACOSX/
-A006/src/chromedriver
-A007/jenkins_home
-
-*.pdf
-*.csv
-*.exe
-
-
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,virtualenv,venv
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,virtualenv,venv
 
@@ -206,3 +194,17 @@ pip-selfcheck.json
 # Support for Project snippet scope
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,virtualenv,venv
+
+# Personal
+*/day-summary/
+*.checkpoint
+*/__MACOSX/
+A006/src/chromedriver
+A007/jenkins_home
+PDFs/*
+
+*.pdf
+*.csv
+*.exe
+
+
